@@ -1,0 +1,10 @@
+apiVersion: 1
+
+datasources:
+- name: clickhouse
+  type: vertamedia-clickhouse-datasource
+  access: server
+  orgId: 1
+  url: http://clickhouse:8123
+  isDefault: true
+  editable: true

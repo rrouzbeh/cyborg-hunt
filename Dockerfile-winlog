@@ -1,0 +1,32 @@
+FROM golang:latest as builder
+LABEL maintainer="Rouzbeh Radparvar"
+
+ENV GEOIP_COUNTRY_BASE_URL      https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-Country&license_key=
+ENV GEOIP_ASN_BASE_URL      https://download.maxmind.com/app/geoip_download?edition_id=GeoLite2-ASN&license_key=
+ENV GEOIP_KEY       MAXMIND_KEY
+
+WORKDIR /tmp/
+RUN curl "${GEOIP_COUNTRY_BASE_URL}${GEOIP_KEY}&suffix=tar.gz" -o GeoLite2-Country.tar.gz \
+    && curl  "${GEOIP_ASN_BASE_URL}${GEOIP_KEY}&suffix=tar.gz" -o GeoLite2-ASN.tar.gz
+
+RUN tar xvf  /tmp/GeoLite2-ASN.tar.gz --strip-components 1 \
+    && tar xvf  /tmp/GeoLite2-Country.tar.gz --strip-components 1 
+
+WORKDIR /app
+COPY ./src/winlog/go.mod ./src/winlog/go.sum ./
+RUN go mod download
+COPY ./src/winlog/ .
+
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o sysmon cmd/main.go
+
+
+FROM alpine:latest  
+WORKDIR /root/
+
+COPY --from=builder /app/sysmon .
+COPY --from=builder /tmp/GeoLite2-ASN.mmdb /tmp/GeoLite2-Country.mmdb ./
+
+CMD ["./sysmon"] 
+
+
+

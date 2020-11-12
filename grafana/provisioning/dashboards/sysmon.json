@@ -1,0 +1,99 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "id": 1,
+    "links": [],
+    "panels": [
+      {
+        "datasource": null,
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "align": null,
+              "filterable": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 12,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 2,
+        "options": {
+          "showHeader": true
+        },
+        "pluginVersion": "7.3.1",
+        "targets": [
+          {
+            "database": "cyborg",
+            "dateColDataType": "date",
+            "dateLoading": false,
+            "dateTimeColDataType": "event_date_creation",
+            "dateTimeType": "DATETIME",
+            "datetimeLoading": false,
+            "extrapolate": true,
+            "format": "table",
+            "formattedQuery": "SELECT $timeSeries as t, count() FROM $table WHERE $timeFilter GROUP BY t ORDER BY t",
+            "intervalFactor": 1,
+            "query": "SELECT\n    *\nFROM $table\n\nWHERE $timeFilter\n\nlimit 5000\n",
+            "rawQuery": "SELECT\n    *\nFROM cyborg.sysmon\n\nWHERE date >= toDate(1605148036) AND event_date_creation >= toDateTime(1605148036)\n\nlimit 5000",
+            "refId": "A",
+            "round": "0s",
+            "skip_comments": true,
+            "table": "sysmon",
+            "tableLoading": false
+          }
+        ],
+        "timeFrom": null,
+        "timeShift": null,
+        "title": "SYSMON",
+        "type": "table"
+      }
+    ],
+    "schemaVersion": 26,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": []
+    },
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "Home",
+    "uid": "RZtN1RTMz",
+    "version": 2
+  }
