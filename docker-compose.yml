@@ -59,7 +59,7 @@ services:
       KAFKA_BROKERS: kafka:9092
       KAFKA_GROUP: cyborg-winlog
       KAFKA_TOPICS: winlogbeat
-      KAFKA_OLDEST: true
+      KAFKA_OLDEST: 'true'
       BUFFER_SIZE: 10000
       FlushInterval: 20
     networks:
